@@ -15,7 +15,14 @@ public class questionSelector : MonoBehaviour
     int  problema = 0; //Variable que obtendra un elemento del arreglo
     public GameObject ButtonstoInstantiate;
     public GameObject[]objectsToInstantiate;
-    
+
+    public GameObject imagenFrac;
+    public GameObject buttonFrac;
+    public bool bien = false;
+    public bool mal = true;
+
+   
+
     public int n;
    
     void awake(){ 
@@ -65,7 +72,7 @@ public class questionSelector : MonoBehaviour
         
         
         bool repetido=false;
-        int indice=0;
+        int indice = 0;
         int m=Random.Range(0,4);
         while(indice<problemasTry.Length){
             repetido=false;
@@ -77,13 +84,13 @@ public class questionSelector : MonoBehaviour
             }
                 if(!repetido){
                     problemasTry[indice]=problemas[n];
-                    GameObject buttonFrac = Instantiate(ButtonstoInstantiate,  new Vector2((indice+4)*180,200), pos.transform.rotation) as GameObject;
+                    buttonFrac = Instantiate(ButtonstoInstantiate,  new Vector2((indice+4)*180,200), pos.transform.rotation) as GameObject;
                     buttonFrac.name = ("button"+indice.ToString());
                     GameObject.Find("button"+indice.ToString()).GetComponentInChildren<Text>().text = problemasTry[indice];
                     buttonFrac.transform.parent=pos.transform;
                    
                     if (indice==m){
-                        GameObject imagenFrac = Instantiate(objectsToInstantiate[n], pos.position, pos.transform.rotation) as GameObject;
+                        imagenFrac = Instantiate(objectsToInstantiate[n], pos.position, pos.transform.rotation) as GameObject;
                         imagenFrac.transform.parent=pos.transform;
                         buttonFrac.GetComponent<Button>().onClick.AddListener(() => seleccion());
                 }
@@ -101,13 +108,30 @@ public class questionSelector : MonoBehaviour
     {
         problema = problema + 1;
         print(problema);
-        SceneManager.LoadScene("seleccion");
+        Destroy(imagenFrac);
+        //SceneManager.LoadScene("seleccion");
+        for (int h = 0; h < 4; h++)
+        {
+            Destroy(buttonFrac = GameObject.Find("button" + h.ToString()));
+            buttonFrac.name = "";
+        }
+        randomButtons();
     }
 
     public void malSeleccion()
     {
+        Destroy(imagenFrac);
         print("Respuesta equibocada intenta otra vez");
-        SceneManager.LoadScene("seleccion");
+
+        //SceneManager.LoadScene("seleccion");
+
+        for (int h = 0; h < 4; h++)
+        {
+            Destroy(buttonFrac = GameObject.Find("button" + h.ToString()));
+            buttonFrac.name = "";
+        }
+
+        randomButtons();
     }
 
     // Update is called once per frame
